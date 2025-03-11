@@ -3,7 +3,6 @@ const router = express.Router();
 const storiesController = require("../controllers/storiesController");
 const authMiddleware = require('../middlewares/authMiddleware');
 
-
 router.post("/", authMiddleware, storiesController.createStory);
 
 router.get("/:id", storiesController.getStoryById);

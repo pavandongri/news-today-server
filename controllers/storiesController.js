@@ -83,6 +83,7 @@ const listStories = async (req, res) => {
             , promiseWaitTime);
 
         const count = await Story.countDocuments(query);
+
         res.status(200).json({ stories, totalPages: Math.ceil(count / pageSize), count });
     } catch (error) {
         res.status(500).json({ Error: error.message });
