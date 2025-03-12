@@ -52,17 +52,21 @@ const getIndexSitemap = async (req, res) => {
 
         const root = create({ version: '1.0', encoding: 'UTF-8' }).ele('sitemapindex', {
             xmlns: 'http://www.sitemaps.org/schemas/sitemap/0.9',
-            'xmlns:xsi': "http://www.w3.org/2001/XMLSchema-instance"
+            // 'xmlns:xsi': "http://www.w3.org/2001/XMLSchema-instance"
         });
 
         filteredCategories?.map(categoryName => {
             root.ele('sitemap')
-                .ele('loc').txt(domainUrl + `/sitemap/category/${categoryName}.xml`)
+                .ele('loc').txt(domainUrl + `/sitemap/category/${categoryName}.xml`).up()
+                .ele('changefreq').txt('monthly').up()
+                .ele('priority').txt('0.8').up()
         })
 
         storyDates.forEach(date => {
             root.ele('sitemap')
                 .ele('loc').txt(`${domainUrl}/sitemap/${date?.date}.xml`).up()
+                .ele('changefreq').txt('monthly').up()
+                .ele('priority').txt('0.8').up()
         });
 
         const xmlContent = root.end({ prettyPrint: true });
@@ -84,13 +88,15 @@ const getCategorySitemap = async (req, res) => {
 
         const root = create({ version: '1.0', encoding: 'UTF-8' }).ele('sitemapindex', {
             xmlns: 'http://www.sitemaps.org/schemas/sitemap/0.9',
-            'xmlns:xsi': "http://www.w3.org/2001/XMLSchema-instance"
+            // 'xmlns:xsi': "http://www.w3.org/2001/XMLSchema-instance"
         });
 
         stories.forEach(story => {
             root.ele('url')
                 .ele('loc').dat(`${domainUrl}/story-detail/${story?.slug}`).up()
-                .ele('lastmod').txt(story?.createdAt?.toISOString()?.slice(0, 19) + '+05:30').up();
+                .ele('lastmod').txt(story?.updatedAt?.toISOString()).up()
+                .ele('changefreq').txt('weekly').up()
+                .ele('priority').txt('0.9').up()
         });
 
         const xmlContent = root.end({ prettyPrint: true });
@@ -129,7 +135,9 @@ const getOldStories = async (req, res) => {
         stories.forEach(story => {
             root.ele('url')
                 .ele('loc').dat(`${domainUrl}/story-detail/${story?.slug}`).up()
-                .ele('lastmod').txt(story?.createdAt?.toISOString()?.slice(0, 19) + '+05:30').up();
+                .ele('lastmod').txt(story?.createdAt?.toISOString()).up()
+                .ele('changefreq').txt('weekly').up()
+                .ele('priority').txt('0.9').up()
         });
 
         const xmlContent = root.end({ prettyPrint: true });
