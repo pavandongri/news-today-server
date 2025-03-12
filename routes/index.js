@@ -7,4 +7,6 @@ router.use("/stories", require("./storyRoutes"));
 
 router.use("/categories", require("./categoryRoutes"));
 
+router.use("/sitemap", require("./sitemapRoutes"))
+
 module.exports = router;
