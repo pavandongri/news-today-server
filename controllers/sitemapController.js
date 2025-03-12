@@ -94,7 +94,7 @@ const getCategorySitemap = async (req, res) => {
             root.ele('url')
                 .ele('loc').txt(`${domainUrl}/story-detail/${story?.slug}`).up()
                 .ele('lastmod').txt(story?.createdAt?.toISOString()).up()
-                .ele('changefreq').txt('monthly').up()
+                .ele('changefreq').txt('weekly').up()
                 .ele('priority').txt('0.9').up()
         });
 
@@ -138,7 +138,7 @@ const getOldStories = async (req, res) => {
             root.ele('url')
                 .ele('loc').dat(`${domainUrl}/story-detail/${story?.slug}`).up()
                 .ele('lastmod').txt(story?.createdAt?.toISOString()).up()
-                .ele('changefreq').txt('monthly').up()
+                .ele('changefreq').txt('weekly').up()
                 .ele('priority').txt('0.9').up()
         });
 
