@@ -52,13 +52,12 @@ const getIndexSitemap = async (req, res) => {
 
         const root = create({ version: '1.0', encoding: 'UTF-8' }).ele('sitemapindex', {
             xmlns: 'http://www.sitemaps.org/schemas/sitemap/0.9',
-            // 'xmlns:xsi': "http://www.w3.org/2001/XMLSchema-instance"
         });
 
         filteredCategories?.map(categoryName => {
             root.ele('sitemap')
                 .ele('loc').txt(domainUrl + `/sitemap/category/${categoryName}.xml`).up()
-                .ele('changefreq').txt('monthly').up()
+                .ele('changefreq').txt('daily').up()
                 .ele('priority').txt('0.8').up()
         })
 
@@ -66,7 +65,7 @@ const getIndexSitemap = async (req, res) => {
             root.ele('sitemap')
                 .ele('loc').txt(`${domainUrl}/sitemap/${date?.date}.xml`).up()
                 .ele('changefreq').txt('monthly').up()
-                .ele('priority').txt('0.8').up()
+                .ele('priority').txt('0.7').up()
         });
 
         const xmlContent = root.end({ prettyPrint: true });
@@ -86,16 +85,16 @@ const getCategorySitemap = async (req, res) => {
     try {
         const stories = await Story.find({ categories: { $regex: category, $options: 'i' } })
 
-        const root = create({ version: '1.0', encoding: 'UTF-8' }).ele('sitemapindex', {
+        const root = create({ version: '1.0', encoding: 'UTF-8' }).ele('urlset', {
             xmlns: 'http://www.sitemaps.org/schemas/sitemap/0.9',
-            // 'xmlns:xsi': "http://www.w3.org/2001/XMLSchema-instance"
+            'xmlns:xhtml': "http://www.w3.org/1999/xhtml"
         });
 
         stories.forEach(story => {
             root.ele('url')
-                .ele('loc').dat(`${domainUrl}/story-detail/${story?.slug}`).up()
-                .ele('lastmod').txt(story?.updatedAt?.toISOString()).up()
-                .ele('changefreq').txt('weekly').up()
+                .ele('loc').txt(`${domainUrl}/story-detail/${story?.slug}`).up()
+                .ele('lastmod').txt(story?.createdAt?.toISOString()).up()
+                .ele('changefreq').txt('monthly').up()
                 .ele('priority').txt('0.9').up()
         });
 
@@ -130,13 +129,16 @@ const getOldStories = async (req, res) => {
             .limit(500)
             .lean()
 
-        const root = create({ version: '1.1', encoding: 'UTF-8' }).ele('urlset', { xmlns: 'http://www.sitemaps.org/schemas/sitemap/0.9' })
+        const root = create({ version: '1.0', encoding: 'UTF-8' }).ele('urlset', {
+            xmlns: 'http://www.sitemaps.org/schemas/sitemap/0.9',
+            'xmlns:xhtml': "http://www.w3.org/1999/xhtml"
+        });
 
         stories.forEach(story => {
             root.ele('url')
                 .ele('loc').dat(`${domainUrl}/story-detail/${story?.slug}`).up()
                 .ele('lastmod').txt(story?.createdAt?.toISOString()).up()
-                .ele('changefreq').txt('weekly').up()
+                .ele('changefreq').txt('monthly').up()
                 .ele('priority').txt('0.9').up()
         });
 
