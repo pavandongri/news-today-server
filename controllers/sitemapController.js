@@ -52,13 +52,14 @@ const getIndexSitemap = async (req, res) => {
 
         const root = create({ version: '1.0', encoding: 'UTF-8' }).ele('sitemapindex', {
             xmlns: 'http://www.sitemaps.org/schemas/sitemap/0.9',
+            'xmlns:xsi': "http://www.w3.org/2001/XMLSchema-instance"
         });
 
         filteredCategories?.map(categoryName => {
             root.ele('sitemap')
                 .ele('loc').txt(domainUrl + `/sitemap/category/${categoryName}.xml`).up()
-                .ele('changefreq').txt('daily').up()
-                .ele('priority').txt('0.8').up()
+                // .ele('changefreq').txt('daily').up()
+                // .ele('priority').txt('0.8').up()
         })
 
         storyDates.forEach(date => {
