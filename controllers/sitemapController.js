@@ -65,8 +65,8 @@ const getIndexSitemap = async (req, res) => {
         storyDates.forEach(date => {
             root.ele('sitemap')
                 .ele('loc').txt(`${domainUrl}/sitemap/${date?.date}.xml`).up()
-                .ele('changefreq').txt('monthly').up()
-                .ele('priority').txt('0.7').up()
+                // .ele('changefreq').txt('monthly').up()
+                // .ele('priority').txt('0.7').up()
         });
 
         const xmlContent = root.end({ prettyPrint: true });
